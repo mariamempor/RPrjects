@@ -1,0 +1,66 @@
+source("http://www.openintro.org/stat/data/arbuthnot.R")
+
+arbuthnot # para ver os dados
+
+dim(arbuthnot) # ver as dimensoes dos dados
+
+names(arbuthnot) # nomes das colunas
+
+## EXPLORANDO
+
+arbuthnot$boys
+arbuthnot$girls
+arbuthnot$year
+
+## FAZENDO GRAFICOS
+
+plot(x = arbuthnot$year, y = arbuthnot$girls)
+
+plot(x = arbuthnot$year, y = arbuthnot$girls, type = "l")
+
+?plot # HELP COM A FUNÇÃO
+
+#Agora, vamos supôr que queiramos fazer um gráfico com o número total de batismos. Para calcular isso,
+#nós podemos nos aproveitar do fato de que o R é, na verdade, apenas uma grande calculadora. Nós
+#podemos digitar expressões matemáticas como
+
+5218 + 4683
+
+#para ver o número total de batismos em 1629. Nós podemos repetir isso para cada ano, mas há um modo
+#mais rápido. Se adicionarmos o vetor de batismo para meninos e meninas, o R irá computar todas as
+#somas simultaneamente.
+
+arbuthnot$boys + arbuthnot$girls
+
+#O que você verá são 82 números (naquela exibição compacta, porque não estamos analisando um banco
+#de dados), cada um representando a soma que nós queremos. Dê uma olhada em alguns deles e verifique
+#se eles estão corretos. Portanto, nós podemos criar um gráfico com o total de batismos por ano com o
+#comando
+
+plot(arbuthnot$year, arbuthnot$boys + arbuthnot$girls, type = "l")
+
+#Desta vez, veja que nós deixamos de fora os nomes dos dois primeiros argumentos. Nós podemos fazer
+#isso porque o arquivo de ajuda mostra que o padrão para o comando plot é ter a variável x como primeiro
+#argumento e a variável y como segundo argumento.
+#De maneira similar como calculamos a proporção de meninos, podemos computar a razão entre o número
+#de meninos e o número de meninas batizadas em 1629 com
+
+5218 / 4683
+
+#ou podemos utilizar os vetores completos com a expressão
+
+arbuthnot$boys / arbuthnot$girls
+
+#A proporção de recém-nascidos que são meninos
+
+5218 / (5218 + 4683)
+
+#ou também pode ser calculado para todos os anos simultaneamente:
+  
+arbuthnot$boys / (arbuthnot$boys + arbuthnot$girls)
+
+
+##EXERCICIO
+
+source("http://www.openintro.org/stat/data/present.R")
+
