@@ -1,0 +1,73 @@
+### GGPLOT2 ###
+# Installation
+install.packages("ggplot2")
+
+# Loading
+library(ggplot2)
+
+data(mtcars)
+df <- mtcars[, c("mpg", "cyl", "wt")]
+head(df)
+
+# Basic scatter plot
+ggplot(data = mtcars, aes(x = wt, y = mpg)) + geom_point()
+
+# Change the point size, and shape
+ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point(size = 2, shape = 23)
+
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point() + # to draw points
+  geom_line() # to draw a line
+
+
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point() + # to draw points
+  geom_line(data = head(mtcars), aes(color = cyl))
+
+
+ggplot(data = mtcars, aes_string(x = "wt", y = "mpg")) +
+  geom_point(color = "red") +
+  geom_smooth()
+
+
+### BOXPLOTS
+
+# Convert the variable dose from a numeric to a factor variable
+ToothGrowth$dose <- as.factor(ToothGrowth$dose)
+head(ToothGrowth)
+
+# Basic box plot
+p <- ggplot(ToothGrowth, aes(x = dose, y = len)) + geom_boxplot()
+p
+
+# Rotate the box plot
+p + coord_flip()
+
+# Notched box plot
+ggplot(ToothGrowth, aes(x = dose, y = len)) + geom_boxplot(notch = TRUE)
+
+# Change outlier, color, shape and size
+ggplot(ToothGrowth, aes(x = dose, y = len)) + geom_boxplot(outlier.colour = "red", outlier.shape = 8, outlier.size = 4)
+
+
+# Box plot with mean points
+p + stat_summary(fun.y = mean, geom = "point", shape = 23, size = 4)
+p + scale_x_discrete(limits=c("0.5", "2"))
+
+
+### Boxplot com pontos
+
+# Box plot with dot plot
+p + geom_dotplot(binaxis = 'y', stackdir = 'center', dotsize = 1)
+
+# Box plot with jittered points
+# 0.2 : degree of jitter in x direction
+p + geom_jitter(shape = 16, position = position_jitter(0.2))
+
+
+## alterar as cores das linhas
+
+# Change box plot line colors by groups
+p<-ggplot(ToothGrowth, aes(x=dose, y=len, color=dose)) + geom_boxplot()
+p
+
