@@ -1,0 +1,84 @@
+install.packages(c("readxl","ggplot2"))
+install.packages('cluster')
+install.packages('dplyr')
+
+library(readxl)
+library(ggplot2)
+
+df<-read_excel("EXER_A3.xlsax")
+X<-scale(df[, c("salario", "anosexperiencia")])
+
+ks <-1:9
+erros<-numeric(length(ks))
+for (i in seq_along(ks)) {
+  modelo<-kmeans(X, centers = ks[i], nstart =10)
+  erros[i]<-modelo$tot.withinss
+}
+
+
+elbow<- data.frame(K = ks, ErroTotal = erros)
+
+ggplot(elbow, aes(K, ErroTotal))+geom_line()+geom_point(size=2)+scale_x_continuous(breaks=ks)+labs(title= "Método Elbow",
+      x= "Número de clusters(k)",
+      y= "Erro Total")+
+  theme_minimal()
+## gráfco resposta questão a)
+
+k_final<-3
+modelo3<-kmeans(X, centers = k_final, nstart = 10)
+
+
+df$cluster<-modelo3$cluster
+head(df)
+
+library(dplyr)
+medial_sal<-df%>%
+  group_by(cluster)%>%
+  summarise(media_salarial = mean(salario))
+print(medial_sal)
+##b)
+
+
+
+relacao_sexo<-df%>%
+  group_by(cluster, sexo)%>%
+  summarise(media_salario = mean(salario),
+            n= n(),
+            .groups = "drop")
+print(relacao_sexo)
+
+
+
+ggplot(df, aes(x=factor(sexo, labels = c("Homem", "Mulher")),
+               y= salario,
+               fill = factor(sexo)))+
+  geom_boxplot(width = 0.6, alpha = 0.7, show.legend = FALSE)+
+  labs(x="Sexo", y= "Salario (R$)",
+       title = "Distribuição salarial por sexo")+
+  theme_minimal()
+##c)
+
+
+global<-df%>%
+  group_by(sexo)%>%
+  summarise(media_salario=mean(salario))
+print(global)
+
+
+ggplot(df, aes(anosexperiencia, salario, color = factor(cluster)))+
+  geom_point(alpha = 0.7)+
+  geom_smooth(method = "lm", se = FALSE, color = "black")+
+  labs(color = "Cluster",
+       x= "Anos experiência",
+       y= "salário (R$)",
+       title = "Salário X Experiência, colorido por cluster")+
+  theme_update()
+##D)
+
+correlacao<-cor(df$salario, df$anosexperiencia)
+print(correlacao)
+
+
+
+
+  
